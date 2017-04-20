@@ -19,7 +19,7 @@ function install () {
   console.log('Downloading the project from remote...')
   require('child_process').execSync(`git clone https://github.com/flaviotulino/angular-cbc.git ${TEMP_FOLDER}`)
 
-  fs.copySync(TEMP_FOLDER + '/app', './aa', {filter: (src, dest) => {
+  fs.copySync(TEMP_FOLDER + '/app', './', {filter: (src, dest) => {
     if (src === TEMP_FOLDER + '/app/package.json') {
       return false
     } else {
