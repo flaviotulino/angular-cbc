@@ -1,30 +1,45 @@
 #!/usr/bin/env node
 var args = process.argv.splice(2)
+var fs = require('fs')
+
 switch(args[0]) {
   case 'install':
-    install();
-    break;
+  install();
+  break;
   case 'compile-directives':
-    compileDirectives();
-    break;
+  compileDirectives();
+  break;
   default:
-    console.log('Usage: angular-cbc install')
+  console.log('Usage: angular-cbc install')
   break;
 }
 
+function createDir(path) {
+  if (!fs.existsSync(path)) {
+    fs.mkdirSync(path)
+  }
+}
+
 function install() {
-  var fs = require('fs')
+
   var folders = ['./js', './pages']
 
   console.log('Creating project structure...\n')
   folders.map(f => {
-    if (!fs.existsSync(f)) {
-      fs.mkdirSync(f)
-    }
+    createDir(f)
+    // if (!fs.existsSync(f)) {
+    //   fs.mkdirSync(f)
+    // }
   })
-  if (!fs.existsSync('./js/controllers')) {
-    fs.mkdirSync('./js/controllers')
-  }
+  // if (!fs.existsSync('./js/controllers')) {
+  //   fs.mkdirSync('./js/controllers')
+  // }
+  createDir('./js/controllers')
+  createDir('./css')
+
+  // if (!fs.exsists('./css')) {
+  //   fs.mkdirSync('./css')
+  // }
   const TEMPLATES_DIR = __dirname + '/templates'
 
   console.log('Creating some files...\n')
@@ -45,6 +60,9 @@ function install() {
     fs.writeFileSync(target, fs.readFileSync(source));
   })
 
+  var styleFile = './css/application.scss'
+  fs.writeFileSync(styleFile, '/* Your style goes here */');
+
   console.log('Updating your package.json file...\n')
   // set dependencies in the user package.json
   var userPkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
@@ -59,12 +77,28 @@ function install() {
   fs.writeFileSync('./package.json', JSON.stringify(userPkg))
 
   console.log('Installing dependencies. May take a while...\n')
-  const execSync = require('child_process').execSync;
-  var cmd = execSync('npm install');
 
-  // creating a shortcut
-  fs.symlinkSync('./node_modules/angular-cbc/index.js', './angular-cbc')
-  console.log('Everything is ok! Please take a look at the Readme file!')
+  npmInstall(function() {
+    fs.symlinkSync('./node_modules/angular-cbc/index.js', './angular-cbc')
+    console.log('Everything is ok! Please take a look at the Readme file!')
+  })
+}
+
+function npmInstall(onExit) {
+  var spawn = require('child_process').spawn
+  var cmd = spawn('npm', ['install'])
+
+  cmd.stdout.on('data', function (data) {
+    console.log(data.toString());
+  });
+
+  cmd.stderr.on('data', function (data) {
+    console.log('Error: ' + data.toString());
+  });
+
+  cmd.on('exit', function (code) {
+    onExit()
+  });
 }
 
 function compileDirectives() {
@@ -85,18 +119,18 @@ function compileDirectives() {
     glob(BASE_DIR + '/**/*.js', {}, function (er, files) {
       fs.truncateSync(BASE_FILE)
       var disclaimer = `/*
-  PLEASE NOTE: THIS FILE IS AUTO GENERATED.
-  IF YOU NOTICE SOMETHING PLEASE ENSURE FIRST YOUR FILES HAVE THE SAME NAME
-  OF THE EXPORTED FUNCTION IN THE CODE
-  */\n`
+      PLEASE NOTE: THIS FILE IS AUTO GENERATED.
+      IF YOU NOTICE SOMETHING PLEASE ENSURE FIRST YOUR FILES HAVE THE SAME NAME
+      OF THE EXPORTED FUNCTION IN THE CODE
+      */\n`
       fs.writeFileSync(BASE_FILE, disclaimer)
       files.map(f => {
         var path = f.replace(BASE_DIR, './directives')
         var regex = new RegExp(BASE_DIR + '.*/')
         var name = f.replace(regex, '').replace(/\.js/, '')
         var template = `// ------ ${name} directive
-  import ${name} from '${path}'\nexport {${name}}
-  // ------ \n`
+        import ${name} from '${path}'\nexport {${name}}
+        // ------ \n`
         fs.appendFileSync(BASE_FILE, template)
       })
     })
