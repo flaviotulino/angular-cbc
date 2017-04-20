@@ -21,9 +21,13 @@ function createDir(path) {
 }
 
 function install() {
+  var exec = require('child_process').execSync
+
+  exec('npm install')
+  
   const TEMP_FOLDER = '__temp_app'
   console.log('Downloading the project from remote...')
-  var clone = require('child_process').execSync(`git clone https://github.com/flaviotulino/angular-cbc.git ${TEMP_FOLDER}`)
+  var clone = exec(`git clone https://github.com/flaviotulino/angular-cbc.git ${TEMP_FOLDER}`)
   fs.copySync(TEMP_FOLDER + '/app', './')
 
   // set dependencies in the user package.json
@@ -38,7 +42,7 @@ function install() {
 
   fs.writeFileSync('./package.json', JSON.stringify(userPkg))
   fs.removeSync(TEMP_FOLDER)
-  fs.removeSync('./package.to.extend.json') 
+  fs.removeSync('./package.to.extend.json')
 
   // var folders = ['./js', './pages']
   //
