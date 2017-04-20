@@ -2,11 +2,11 @@ var path = require('path')
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  entry: ['./js/app.js', './css/app.scss'],
+  entry: ['./js/app.js', './css/application.scss'],
 
   output: {
     path: path.resolve(__dirname, 'build'),
-    filename: 'bundle.js'
+    filename: 'application.js'
   },
   module: {
     rules: [
@@ -35,7 +35,7 @@ module.exports = {
   },
   plugins: [
     new ExtractTextPlugin({ // define where to save the file
-      filename: 'style.css',
+      filename: 'application.css',
       allChunks: true,
     }),
   ]

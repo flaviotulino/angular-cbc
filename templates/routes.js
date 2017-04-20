@@ -6,7 +6,7 @@ export default [
   },
   {
     name: '404',
-    url: '/404'
+    url: '/404',
     template: '<span>anything found here</span>'
   }
 ]
