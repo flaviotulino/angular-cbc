@@ -4,14 +4,14 @@ var fs = require('fs')
 
 switch(args[0]) {
   case 'install':
-  install();
-  break;
+    install();
+    break;
   case 'compile-directives':
-  compileDirectives();
-  break;
+    compileDirectives();
+    break;
   default:
-  console.log('Usage: angular-cbc install')
-  break;
+    console.log('Usage: angular-cbc install')
+    break;
 }
 
 function createDir(path) {
@@ -27,19 +27,11 @@ function install() {
   console.log('Creating project structure...\n')
   folders.map(f => {
     createDir(f)
-    // if (!fs.existsSync(f)) {
-    //   fs.mkdirSync(f)
-    // }
   })
-  // if (!fs.existsSync('./js/controllers')) {
-  //   fs.mkdirSync('./js/controllers')
-  // }
+
   createDir('./js/controllers')
   createDir('./css')
 
-  // if (!fs.exsists('./css')) {
-  //   fs.mkdirSync('./css')
-  // }
   const TEMPLATES_DIR = __dirname + '/templates'
 
   console.log('Creating some files...\n')

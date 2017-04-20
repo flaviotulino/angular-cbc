@@ -9,7 +9,12 @@ function config ($stateProvider, $urlRouterProvider) {
     }
     $stateProvider.state(route)
   })
-  $urlRouterProvider.otherwise('/')
+
+  if (routes.find(r => r.name === '404' || r.render404 == true)) {
+    $urlRouterProvider.otherwise(r.url)
+  } else {
+    $urlRouterProvider.otherwise('/')
+  }
 }
 config.$inject = ['$stateProvider', '$urlRouterProvider']
 export default config

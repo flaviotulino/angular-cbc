@@ -1,5 +1,5 @@
 {
-"bin": "./node_modules/angular-cbc/index.js",
+"bin": "./node_modules/.bin/angular-cbc",
 "devDependencies": {
     "babel-core": "^6.24.1",
     "babel-loader": "^6.4.1",
