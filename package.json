@@ -1,12 +1,12 @@
 {
   "name": "angular-cbc",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "bin": "./index.js",
   "description": "Code Angular by conventions!",
   "main": "index.js",
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "fs-extra": "^2.1.2"
   }
 }

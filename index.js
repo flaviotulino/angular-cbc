@@ -1,41 +1,34 @@
 #!/usr/bin/env node
 var args = process.argv.splice(2)
+var fs = require('fs-extra')
 
-
-switch(args[0]) {
+switch (args[0]) {
   case 'install':
-    install();
-    break;
+    install()
+    break
   case 'compile-directives':
-    compileDirectives();
-    break;
+    compileDirectives()
+    break
   default:
     console.log('Usage: angular-cbc install')
-    break;
+    break
 }
 
-function createDir(path) {
-  if (!fs.existsSync(path)) {
-    fs.mkdirSync(path)
-  }
-}
-
-function install() {
+function install () {
   const TEMP_FOLDER = '__temp_app'
   console.log('Downloading the project from remote...')
-  var clone = require('child_process').execSync(`git clone https://github.com/flaviotulino/angular-cbc.git ${TEMP_FOLDER}`)
+  require('child_process').execSync(`git clone https://github.com/flaviotulino/angular-cbc.git ${TEMP_FOLDER}`)
 
-  var fs = require('fs-extra')
   fs.copySync(TEMP_FOLDER + '/app', './')
 
   // set dependencies in the user package.json
-  var userPkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
-  const pkg = JSON.parse(fs.readFileSync('./package.to.extend.json', 'utf8'));
+  var userPkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
+  const pkg = JSON.parse(fs.readFileSync('./package.to.extend.json', 'utf8'))
 
-  var entries = ['devDependencies','dependencies','scripts']
+  var entries = ['devDependencies', 'dependencies', 'scripts']
   entries.map(function (e) {
     userPkg[e] = userPkg[e] || {}
-    userPkg[e] = Object.assign(userPkg[e],pkg[e])
+    userPkg[e] = Object.assign(userPkg[e], pkg[e])
   })
 
   fs.writeFileSync('./package.json', JSON.stringify(userPkg))
@@ -88,32 +81,31 @@ function install() {
   //
   // fs.writeFileSync('./package.json', JSON.stringify(userPkg))
   //
-  // console.log('Installing dependencies. May take a while...\n')
-  //
-  // npmInstall(function() {
-  //   fs.symlinkSync('./node_modules/angular-cbc/index.js', './angular-cbc')
-  //   console.log('Everything is ok! Please take a look at the Readme file!')
-  // })
+  console.log('Installing dependencies. May take a while...\n')
+  npmInstall(function () {
+    fs.symlinkSync('./node_modules/angular-cbc/index.js', './angular-cbc')
+    console.log('Everything is ok! Please take a look at the Readme file!')
+  })
 }
 
-function npmInstall(onExit) {
+function npmInstall (onExit) {
   var spawn = require('child_process').spawn
   var cmd = spawn('npm', ['install'])
 
   cmd.stdout.on('data', function (data) {
-    console.log(data.toString());
-  });
+    console.log(data.toString())
+  })
 
   cmd.stderr.on('data', function (data) {
-    console.log('Error: ' + data.toString());
-  });
+    console.log('Error: ' + data.toString())
+  })
 
   cmd.on('exit', function (code) {
     onExit()
-  });
+  })
 }
 
-function compileDirectives() {
+function compileDirectives () {
   const BASE_DIR = './js/directives'
   const BASE_FILE = './js/directives.js'
   var watch = require('node-watch')
@@ -147,5 +139,4 @@ function compileDirectives() {
       })
     })
   }
-
 }
