@@ -16,6 +16,15 @@ function config ($stateProvider, $urlRouterProvider) {
   } else {
     $urlRouterProvider.otherwise('/')
   }
+
+  $urlRouterProvider.rule(function ($injector, $location) {
+    var re = /(.+)(\/+)(\?.*)?$/
+    var path = $location.url()
+    if (re.test(path)) {
+      return path.replace(re, '$1$3')
+    }
+    return false
+  })
 }
 config.$inject = ['$stateProvider', '$urlRouterProvider']
 export default config
