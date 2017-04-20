@@ -19,7 +19,13 @@ function install () {
   console.log('Downloading the project from remote...')
   require('child_process').execSync(`git clone https://github.com/flaviotulino/angular-cbc.git ${TEMP_FOLDER}`)
 
-  fs.copySync(TEMP_FOLDER + '/app', './')
+  fs.copySync(TEMP_FOLDER + '/app', './', {filter: (src, dest) => {
+    if (src == 'package.json') {
+      return false
+    } else {
+      return true
+    }
+  }})
 
   // set dependencies in the user package.json
   var userPkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
@@ -35,52 +41,6 @@ function install () {
   fs.removeSync(TEMP_FOLDER)
   fs.removeSync('./package.to.extend.json')
 
-  // var folders = ['./js', './pages']
-  //
-  // console.log('Creating project structure...\n')
-  // folders.map(f => {
-  //   createDir(f)
-  // })
-  //
-  // createDir('./js/controllers')
-  // createDir('./css')
-  //
-  // const TEMPLATES_DIR = __dirname + '/templates'
-  //
-  // console.log('Creating some files...\n')
-  // fs.writeFileSync('./js/controllers/BaseController.js', fs.readFileSync(TEMPLATES_DIR + '/BaseController.js'));
-  //
-  // // Copy files in the js folder
-  // var jsFiles = ['app.js','config.js','directives.js','routes.js']
-  // jsFiles.map(function(js) {
-  //   var source = TEMPLATES_DIR + '/' + js
-  //   var target = './js/' + js
-  //   fs.writeFileSync(target, fs.readFileSync(source));
-  // })
-  //
-  // var otherFiles = ['webpack.config.js','index.html','README.md']
-  // otherFiles.map(function (f) {
-  //   var source = TEMPLATES_DIR + '/' + f
-  //   var target = './' + f
-  //   fs.writeFileSync(target, fs.readFileSync(source));
-  // })
-  //
-  // var styleFile = './css/application.scss'
-  // fs.writeFileSync(styleFile, '/* Your style goes here */');
-  //
-  // console.log('Updating your package.json file...\n')
-  // // set dependencies in the user package.json
-  // var userPkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'));
-  // const pkg = JSON.parse(fs.readFileSync(TEMPLATES_DIR + '/pkg.json', 'utf8'));
-  //
-  // var entries = ['devDependencies','dependencies','scripts','bin']
-  // entries.map(function (e) {
-  //   userPkg[e] = userPkg[e] || {}
-  //   userPkg[e] = Object.assign(userPkg[e],pkg[e])
-  // })
-  //
-  // fs.writeFileSync('./package.json', JSON.stringify(userPkg))
-  //
   console.log('Installing dependencies. May take a while...\n')
   npmInstall(function () {
     fs.symlinkSync('./node_modules/angular-cbc/index.js', './angular-cbc')
