@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 var args = process.argv.splice(2)
-var fs = require('fs-extra')
+
 
 switch(args[0]) {
   case 'install':
@@ -23,11 +23,14 @@ function createDir(path) {
 function install() {
   var exec = require('child_process').execSync
 
-  exec('npm install')
-  
   const TEMP_FOLDER = '__temp_app'
   console.log('Downloading the project from remote...')
   var clone = exec(`git clone https://github.com/flaviotulino/angular-cbc.git ${TEMP_FOLDER}`)
+
+
+  exec('npm install')
+
+  var fs = require('fs-extra')
   fs.copySync(TEMP_FOLDER + '/app', './')
 
   // set dependencies in the user package.json
