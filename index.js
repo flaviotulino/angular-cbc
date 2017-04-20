@@ -6,6 +6,9 @@ switch (args[0]) {
   case 'install':
     install()
     break
+  case 'browse':
+    openBrowser()
+    break
   case 'compile-directives':
     compileDirectives()
     break
@@ -15,7 +18,7 @@ switch (args[0]) {
 }
 
 function install () {
-  const TEMP_FOLDER = '.temp_app/'
+  const TEMP_FOLDER = '.temp_app'
   console.log('Downloading the project from remote...')
   require('child_process').execSync(`git clone https://github.com/flaviotulino/angular-cbc.git ${TEMP_FOLDER}`)
 
@@ -63,6 +66,11 @@ function npmInstall (onExit) {
   cmd.on('exit', function (code) {
     onExit()
   })
+}
+
+function openBrowser() {
+  const opn = require('opn')
+  opn('http://localhost:8080/')
 }
 
 function compileDirectives () {

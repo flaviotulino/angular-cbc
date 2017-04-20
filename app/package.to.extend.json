@@ -13,7 +13,8 @@
     "node-sass": "^4.5.2",
     "node-watch": "^0.5.2",
     "sass-loader": "^6.0.3",
-    "style-loader": "^0.16.1"
+    "style-loader": "^0.16.1",
+    "opn": "^4.0.2"
   },
   "dependencies": {
     "angular-ui-router": "^0.4.2",
@@ -21,7 +22,8 @@
     "angular": "^1.6.4"
   },
   "scripts": {
+    "browse": "./node_modules/.bin/angular-cbc browse",
     "directives": "./node_modules/.bin/angular-cbc compile-directives",
-    "start": "concurrently \"npm run directives\" \"webpack-dev-server --progress --color\""
+    "start": "concurrently \"npm run directives\" \"webpack-dev-server --progress --color\" \"npm run browse\""
   }
 }
