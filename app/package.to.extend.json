@@ -9,6 +9,7 @@
     "webpack-dev-server": "^2.4.2",
     "concurrently": "^3.4.0",
     "extract-text-webpack-plugin": "^2.1.0",
+    "html-webpack-plugin": "^2.28.0",
     "css-loader": "^0.28.0",
     "node-sass": "^4.5.2",
     "node-watch": "^0.5.2",
@@ -24,6 +25,7 @@
   "scripts": {
     "browse": "./node_modules/.bin/angular-cbc browse",
     "directives": "./node_modules/.bin/angular-cbc compile-directives",
+    "bundle": "/node_modules/.bin/webpack -p",
     "start": "concurrently \"npm run directives\" \"webpack-dev-server --progress --color\" \"npm run browse\""
   }
 }

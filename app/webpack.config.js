@@ -1,5 +1,6 @@
 var path = require('path')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: ['./js/app.js', './css/application.scss'],
@@ -37,6 +38,9 @@ module.exports = {
     new ExtractTextPlugin({ // define where to save the file
       filename: 'application.css',
       allChunks: true
+    }),
+    new HtmlWebpackPlugin({
+      template: 'index.html'
     })
   ]
 }
