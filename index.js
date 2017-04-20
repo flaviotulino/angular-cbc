@@ -15,7 +15,7 @@ switch (args[0]) {
 }
 
 function install () {
-  const TEMP_FOLDER = '__temp_app'
+  const TEMP_FOLDER = '.temp_app/'
   console.log('Downloading the project from remote...')
   require('child_process').execSync(`git clone https://github.com/flaviotulino/angular-cbc.git ${TEMP_FOLDER}`)
 
