@@ -1,5 +1,4 @@
 {
-"bin": "./node_modules/.bin/angular-cbc",
 "devDependencies": {
     "babel-core": "^6.24.1",
     "babel-loader": "^6.4.1",
@@ -22,7 +21,7 @@
     "angular": "^1.6.4"
   },
   "scripts": {
-    "directives": "./angular-cbc compile-directives",
+    "directives": "./node_modules/.bin/angular-cbc compile-directives",
     "start": "concurrently \"npm run directives\" \"webpack-dev-server --progress --color\""
   }
 }
