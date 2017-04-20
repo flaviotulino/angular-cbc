@@ -7,5 +7,9 @@ export default [
   {
     name: 'home',
     url: '/home'
+  },
+  {
+    name: '404',
+    url: '/404'
   }
 ]

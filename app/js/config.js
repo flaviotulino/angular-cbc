@@ -10,8 +10,8 @@ function config ($stateProvider, $urlRouterProvider) {
     $stateProvider.state(route)
   })
 
-  let _404route = null;
-  if ((_404route = (routes.find(r => r.name === '404' || r.render404 == true)))) {
+  let _404route = null
+  if ((_404route = (routes.find(r => r.name === '404' || r.render404 === true)))) {
     $urlRouterProvider.otherwise(_404route.url)
   } else {
     $urlRouterProvider.otherwise('/')
