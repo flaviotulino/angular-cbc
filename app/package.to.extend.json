@@ -15,7 +15,7 @@
     "node-watch": "^0.5.2",
     "sass-loader": "^6.0.3",
     "style-loader": "^0.16.1",
-    "opn": "^4.0.2"
+    "open-browser-webpack-plugin": "0.0.5",
   },
   "dependencies": {
     "angular-ui-router": "^0.4.2",
@@ -23,9 +23,8 @@
     "angular": "^1.6.4"
   },
   "scripts": {
-    "browse": "./node_modules/.bin/angular-cbc browse",
     "directives": "./node_modules/.bin/angular-cbc compile-directives",
     "bundle": "/node_modules/.bin/webpack -p",
-    "start": "concurrently \"npm run directives\" \"webpack-dev-server --progress --color\" \"npm run browse\""
+    "start": "concurrently \"npm run directives\" \"webpack-dev-server --progress --color\""
   }
 }

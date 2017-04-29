@@ -1,6 +1,7 @@
 var path = require('path')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var OpenBrowserPlugin = require('open-browser-webpack-plugin')
 
 module.exports = {
   entry: ['./js/app.js', './css/application.scss'],
@@ -41,6 +42,9 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: 'index.html'
+    }),
+    new OpenBrowserPlugin({
+      url: 'http://localhost:8080'
     })
   ]
 }

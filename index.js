@@ -6,8 +6,8 @@ switch (args[0]) {
   case 'install':
     install()
     break
-  case 'browse':
-    openBrowser()
+  case 'assets':
+    assets()
     break
   case 'compile-directives':
     compileDirectives()
@@ -32,7 +32,8 @@ function install () {
 
   // set dependencies in the user package.json
   var userPkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
-  const pkg = JSON.parse(fs.readFileSync('./package.to.extend.json', 'utf8'))
+  //const pkg = JSON.parse(fs.readFileSync('./package.to.extend.json', 'utf8'))
+  const pkg = JSON.parse(fs.readFileSync(TEMP_FOLDER + '/package.json', 'utf8'))
 
   var entries = ['devDependencies', 'dependencies', 'scripts']
   entries.map(function (e) {
@@ -68,9 +69,21 @@ function npmInstall (onExit) {
   })
 }
 
-function openBrowser() {
-  const opn = require('opn')
-  opn('http://localhost:8080/')
+function assets () {
+  //var fs = require('fs-extra')
+  const cheerio = require('cheerio')
+  let index = fs.readFileSync('index.html', 'utf8')
+  const $ = cheerio.load(index)
+
+  let scripts = $('script')
+    .filter((i, el) => $(el).attr('src').indexOf('application.js') < 0 && !$(el).attr('src').match(/http|https/))
+    .map((index, el) => $(el).attr('src')).get()
+
+  scripts.map(s => {
+    let name = s.slice(s.lastIndexOf('/') + 1, s.length)
+    fs.copySync('../' + s, name)
+    index.replace(s, name)
+  })
 }
 
 function compileDirectives () {
