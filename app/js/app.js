@@ -1,5 +1,6 @@
 import config from './config'
 import * as directives from './directives'
+import deps from './dependencies'
 
 import preConfig from './hooks/preConfig'
 import postConfig from './hooks/postConfig'
@@ -9,7 +10,7 @@ import preBootstrap from './hooks/preBootstrap'
 import postBootstrap from './hooks/postBootstrap'
 
 var angular = window.angular || {}
-const application = angular.module('app', ['ui.router'])
+const application = angular.module('app', deps.concat('ui.router'))
 
 if (hookIsValid(preConfig)) {
   preConfig()

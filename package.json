@@ -1,6 +1,6 @@
 {
   "name": "angular-cbc",
-  "version": "2.0.16",
+  "version": "2.0.2",
   "bin": "./index.js",
   "description": "Code Angular by conventions!",
   "main": "index.js",
