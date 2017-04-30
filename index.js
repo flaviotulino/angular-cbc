@@ -65,19 +65,22 @@ function npmInstall (onExit) {
 }
 
 function assets () {
+  const BUILD_PATH = 'build/'
   const cheerio = require('cheerio')
-  let index = fs.readFileSync('build/index.html', 'utf8')
+  let index = fs.readFileSync(BUILD_PATH + 'index.html', 'utf8')
   const $ = cheerio.load(index)
 
   let scripts = $('script')
-    .filter((i, el) => $(el).attr('src').indexOf('application.js') < 0 && !$(el).attr('src').match(/http|https/))
-    .map((index, el) => $(el).attr('src')).get()
+  .filter((i, el) => $(el).attr('src').indexOf('application.js') < 0 && !$(el).attr('src').match(/http|https/))
+  .map((index, el) => $(el).attr('src')).get()
 
   scripts.map(s => {
     let name = s.slice(s.lastIndexOf('/') + 1, s.length)
-    fs.copySync('../' + s, name)
-    index.replace(s, name)
+    fs.copySync(s, BUILD_PATH + name)
+    index = index.replace(s, name)
   })
+
+  fs.writeFileSync(BUILD_PATH + 'index.html', index)
 }
 
 function compileDirectives () {
