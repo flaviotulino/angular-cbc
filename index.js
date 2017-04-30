@@ -33,7 +33,7 @@ function install () {
   // set dependencies in the user package.json
   var userPkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
   //const pkg = JSON.parse(fs.readFileSync('./package.to.extend.json', 'utf8'))
-  const pkg = JSON.parse(fs.readFileSync(TEMP_FOLDER + '/package.json', 'utf8'))
+  const pkg = JSON.parse(fs.readFileSync(TEMP_FOLDER + '/app/package.json', 'utf8'))
 
   var entries = ['devDependencies', 'dependencies', 'scripts']
   entries.map(function (e) {
