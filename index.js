@@ -42,6 +42,7 @@ function install () {
   })
 
   fs.writeFileSync('./package.json', JSON.stringify(userPkg))
+  fs.emptyDirSync(TEMP_FOLDER)
   fs.removeSync(TEMP_FOLDER)
   fs.removeSync('./package.to.extend.json')
 
