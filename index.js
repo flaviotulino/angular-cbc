@@ -66,7 +66,7 @@ function npmInstall (onExit) {
 
 function assets () {
   const cheerio = require('cheerio')
-  let index = fs.readFileSync('index.html', 'utf8')
+  let index = fs.readFileSync('build/index.html', 'utf8')
   const $ = cheerio.load(index)
 
   let scripts = $('script')
