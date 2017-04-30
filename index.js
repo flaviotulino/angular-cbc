@@ -2,25 +2,13 @@
 var args = process.argv.splice(2)
 var fs = require('fs-extra')
 
-// switch (args[0]) {
-//   case 'install':
-//     install()
-//     break
-//   case 'assets':
-//     assets()
-//     break
-//   case 'compile-directives':
-//     compileDirectives()
-//     break
-//   default:
-//     console.log('Usage: angular-cbc install')
-//     break
-// }
-
 /* eslint no-eval: 0 */
-if (args[0] !== undefined && typeof eval(args[0]) === 'function') {
-  eval(args[0]())
-} else {
+try {
+  let name = args[0].replace(/(-.)/g, function (x) {
+    return x[1].toUpperCase()
+  })
+  eval(name.toString())()
+} catch (e) {
   console.log('Usage: angular-cbc install')
   process.exit(1)
 }
@@ -77,7 +65,6 @@ function npmInstall (onExit) {
 }
 
 function assets () {
-  //var fs = require('fs-extra')
   const cheerio = require('cheerio')
   let index = fs.readFileSync('index.html', 'utf8')
   const $ = cheerio.load(index)
