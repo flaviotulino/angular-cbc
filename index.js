@@ -9,6 +9,7 @@ try {
   })
   eval(name.toString())()
 } catch (e) {
+  console.log(e)
   console.log('Usage: angular-cbc install')
   process.exit(1)
 }
