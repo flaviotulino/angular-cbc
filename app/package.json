@@ -6,7 +6,7 @@
   "scripts": {
     "directives": "./node_modules/.bin/angular-cbc compile-directives",
     "start": "concurrently \"npm run directives\" \"webpack-dev-server --progress --color\"",
-    "bundle": "./node_modules/.bin/webpack -p"
+    "bundle": "./node_modules/.bin/webpack -p; ./node_modules/.bin/angular-cbc assets"
   },
   "author": "",
   "license": "ISC",
