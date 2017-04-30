@@ -2,25 +2,33 @@
 var args = process.argv.splice(2)
 var fs = require('fs-extra')
 
-switch (args[0]) {
-  case 'install':
-    install()
-    break
-  case 'assets':
-    assets()
-    break
-  case 'compile-directives':
-    compileDirectives()
-    break
-  default:
-    console.log('Usage: angular-cbc install')
-    break
+// switch (args[0]) {
+//   case 'install':
+//     install()
+//     break
+//   case 'assets':
+//     assets()
+//     break
+//   case 'compile-directives':
+//     compileDirectives()
+//     break
+//   default:
+//     console.log('Usage: angular-cbc install')
+//     break
+// }
+
+/* eslint no-eval: 0 */
+if (args[0] !== undefined && typeof eval(args[0]) === 'function') {
+  eval(args[0]())
+} else {
+  console.log('Usage: angular-cbc install')
+  process.exit(1)
 }
 
 function install () {
   const TEMP_FOLDER = '.temp_app'
   console.log('Downloading the project from remote...')
-  require('child_process').execSync(`git clone https://github.com/flaviotulino/angular-cbc.git ${TEMP_FOLDER}`)
+  require('child_process').execSync(`git clone --quiet https://github.com/flaviotulino/angular-cbc.git ${TEMP_FOLDER}`)
 
   fs.copySync(TEMP_FOLDER + '/app', './', {filter: (src, dest) => {
     if (src === TEMP_FOLDER + '/app/package.json') {
@@ -32,7 +40,6 @@ function install () {
 
   // set dependencies in the user package.json
   var userPkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
-  //const pkg = JSON.parse(fs.readFileSync('./package.to.extend.json', 'utf8'))
   const pkg = JSON.parse(fs.readFileSync(TEMP_FOLDER + '/app/package.json', 'utf8'))
 
   var entries = ['devDependencies', 'dependencies', 'scripts']
@@ -44,7 +51,6 @@ function install () {
   fs.writeFileSync('./package.json', JSON.stringify(userPkg))
   fs.emptyDirSync(TEMP_FOLDER)
   fs.removeSync(TEMP_FOLDER)
-  fs.removeSync('./package.to.extend.json')
 
   console.log('Installing dependencies. May take a while...\n')
   npmInstall(function () {
