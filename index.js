@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-var args = process.argv.splice(2)
-var fs = require('fs-extra')
+const args = process.argv.splice(2)
+const fs = require('fs-extra')
 
 /* eslint no-eval: 0 */
 try {
@@ -27,10 +27,10 @@ function install () {
   }})
 
   // set dependencies in the user package.json
-  var userPkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
+  let userPkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
   const pkg = JSON.parse(fs.readFileSync(TEMP_FOLDER + '/app/package.json', 'utf8'))
 
-  var entries = ['devDependencies', 'dependencies', 'scripts']
+  const entries = ['devDependencies', 'dependencies', 'scripts']
   entries.map(function (e) {
     userPkg[e] = userPkg[e] || {}
     userPkg[e] = Object.assign(userPkg[e], pkg[e])
@@ -48,8 +48,8 @@ function install () {
 }
 
 function npmInstall (onExit) {
-  var spawn = require('child_process').spawn
-  var cmd = spawn('npm', ['install'])
+  const spawn = require('child_process').spawn
+  const cmd = spawn('npm', ['install'])
 
   cmd.stdout.on('data', function (data) {
     console.log(data.toString())
@@ -83,9 +83,9 @@ function assets () {
 function compileDirectives () {
   const BASE_DIR = './js/directives'
   const BASE_FILE = './js/directives.js'
-  var watch = require('node-watch')
-  var watcher = watch(BASE_DIR, { recursive: true })
-  var glob = require('glob')
+  const watch = require('node-watch')
+  const watcher = watch(BASE_DIR, { recursive: true })
+  const glob = require('glob')
 
   watcher.on('change', function (evt, name) {
     if (name.indexOf('.js')) {
@@ -104,10 +104,10 @@ function compileDirectives () {
       */\n`
       fs.writeFileSync(BASE_FILE, disclaimer)
       files.map(f => {
-        var path = f.replace(BASE_DIR, './directives')
-        var regex = new RegExp(BASE_DIR + '.*/')
-        var name = f.replace(regex, '').replace(/\.js/, '')
-        var template = `// ------ ${name} directive
+        let path = f.replace(BASE_DIR, './directives')
+        let regex = new RegExp(BASE_DIR + '.*/')
+        let name = f.replace(regex, '').replace(/\.js/, '')
+        let template = `// ------ ${name} directive
         import ${name} from '${path}'\nexport {${name}}
         // ------ \n`
         fs.appendFileSync(BASE_FILE, template)
