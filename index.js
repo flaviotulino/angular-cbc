@@ -187,6 +187,7 @@ class CBC {
   }
 }
 
+/*  ******************** NODOBY SHOULD EDIT THIS PART ********************** */
 // Run the relative task parsing CLI arguments
 try {
   /*
@@ -208,6 +209,10 @@ try {
   // Call the function with the argument name
   new CBC()[name]()
 } catch (e) {
+  // Show a backtrace only if requested
+  if (args.indexOf('--v') >= 0 || args.indexOf('--verbose') >= 0) {
+    console.log(e)
+  }
   // In any other case, just show the usage guide
   let tasks = Object.getOwnPropertyNames(CBC.prototype).filter(t => {
     return CBC.RESTRICTED_METHODS.indexOf(t) < 0
