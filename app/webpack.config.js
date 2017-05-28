@@ -13,6 +13,11 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.scss/,
+        enforce: 'pre',
+        loader: 'import-glob-loader'
+      },
+      {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: 'babel-loader',

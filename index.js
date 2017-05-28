@@ -3,6 +3,11 @@
 const args = process.argv.splice(2)
 const fs = require('fs-extra')
 
+function dir (...segments) {
+  segments = segments.map(s => s.replace(/\//, ''))
+  return segments.join('/')
+}
+
 /**
 * This class handles the entire CBC behaviour.
 * Add a method in camel case notation to run it
@@ -40,8 +45,8 @@ class CBC {
     * copy all the downloaded files in the root folder, except the
     * package.json to keep the user one
     */
-    fs.copySync(TEMP_FOLDER + '/app', './', {filter: (src, dest) => {
-      if (src === TEMP_FOLDER + '/app/package.json') {
+    fs.copySync(dir(TEMP_FOLDER, 'app', './'), {filter: (src, dest) => {
+      if (src === dir(TEMP_FOLDER, 'app', 'package.json')) {
         return false
       } else {
         return true
@@ -50,7 +55,7 @@ class CBC {
 
     // set dependencies extending the user's package.json
     let userPkg = JSON.parse(fs.readFileSync('./package.json', 'utf8'))
-    const pkg = JSON.parse(fs.readFileSync(TEMP_FOLDER + '/app/package.json', 'utf8'))
+    const pkg = JSON.parse(fs.readFileSync(dir(TEMP_FOLDER, 'app', 'package.json'), 'utf8'))
 
     const entries = ['devDependencies', 'dependencies', 'scripts']
     entries.map(function (e) {
@@ -98,13 +103,13 @@ class CBC {
   * Perform some replacements in the bundled index.html file
   */
   assets () {
-    const BUILD_PATH = 'build/'
+    const BUILD_PATH = 'build'
     fs.emptyDirSync(BUILD_PATH)
 
     const cheerio = require('cheerio')
 
     // load the index.html file content
-    let index = fs.readFileSync(BUILD_PATH + 'index.html', 'utf8')
+    let index = fs.readFileSync(dir(BUILD_PATH, 'index.html'), 'utf8')
     const $ = cheerio.load(index)
 
     /**
@@ -122,14 +127,14 @@ class CBC {
       * script name, and copy the script itself in the build folder
       */
       let name = s.slice(s.lastIndexOf('/') + 1, s.length)
-      fs.copySync(s, BUILD_PATH + name)
+      fs.copySync(s, dir(BUILD_PATH, name))
 
       // replace the URI with the copied one
       index = index.replace(s, name)
     })
 
     // overwrite the old index.html file the manipulated one
-    fs.writeFileSync(BUILD_PATH + 'index.html', index)
+    fs.writeFileSync(dir(BUILD_PATH, 'index.html'), index)
   }
 
   /**
@@ -183,6 +188,42 @@ class CBC {
           fs.appendFileSync(BASE_FILE, template)
         })
       })
+    }
+  }
+
+  // a shortcut
+  g () {
+    this.generate()
+  }
+
+  generate () {
+    switch (args[1]) {
+      case 'controller':
+        let controllerName =
+          args[2].toLowerCase().indexOf('controller') < 0
+          ? args[2] + 'Controller' : args[2]
+
+        let controllerTemplate = `import BaseController from './BaseController'
+export default class ${controllerName} extends BaseController {
+  constructor ($scope) {
+    super($scope)
+  }
+}
+${controllerName}.$inject = ['$scope']`
+
+        fs.writeFileSync(dir('js', 'controllers', `${args[2]}.js`), controllerTemplate)
+        break
+      case 'directive':
+        let directiveTemplate = `export default function ${args[2]}() {
+  return {
+  }
+}
+${args[2]}.$inject = []`
+        fs.writeFileSync(dir('js', 'directives', `${args[2]}.js`), directiveTemplate)
+        break
+      default:
+        console.log('Generator usage: ./angular-cbc generator controller|directive <name>')
+        break
     }
   }
 }

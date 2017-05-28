@@ -1,6 +1,6 @@
 {
   "name": "angular-cbc",
-  "version": "2.1.51",
+  "version": "2.1.52",
   "bin": "./index.js",
   "description": "Code Angular by conventions!",
   "main": "index.js",
@@ -9,8 +9,11 @@
   "dependencies": {
     "fs-extra": "^2.1.2"
   },
-  "repository" :{
-    "type" : "git",
-    "url" : "https://github.com/flaviotulino/angular-cbc"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flaviotulino/angular-cbc"
+  },
+  "devDependencies": {
+    "import-glob-loader": "^1.1.0"
   }
 }
