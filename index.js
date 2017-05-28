@@ -23,12 +23,12 @@ class CBC {
     return ['npmInstall', 'constructor']
   }
 
-  /**
+  /*
   * Perform the full installation of this module
-  *   - Download the module from a remote repository
-  *   - Add dependencies and scripts to the existing package.json file
-  *   - Install all the dependencies
-  *   - Create a symlink to the binary inside the root folder
+  * - Download the module from a remote repository
+  * - Add dependencies and scripts to the existing package.json file
+  * - Install all the dependencies
+  * - Create a symlink to the binary inside the root folder
   */
   install () {
     // this the temp folder where to download the module
@@ -41,7 +41,7 @@ class CBC {
     console.log('Downloading the project from remote...')
     require('child_process').execSync(`git clone --quiet https://github.com/flaviotulino/angular-cbc.git ${TEMP_FOLDER}`)
 
-    /**
+    /*
     * copy all the downloaded files in the root folder, except the
     * package.json to keep the user one
     */
